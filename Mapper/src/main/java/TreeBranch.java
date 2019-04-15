@@ -24,4 +24,20 @@ class TreeBranch extends File{
         System.out.println("FILE NOT FOUND " + fileToOpen.name());
         return null;
     }
+
+    static void addElement(BranchElement element) {
+
+    }
+
+    static void removeElement(BranchElement element) {
+
+    }
+
+    static BranchElement elementLookup(String elementName) {
+        return new BranchElement("","","");
+    }
+
+    static void getDependencies(BranchElement element) {
+
+    }
 }

@@ -14,7 +14,7 @@ public class Main {
 
         boolean running = true;
 
-        while (running) {
+        while (true) {
             treeSelect();
             actionSelect();
         }
@@ -41,8 +41,35 @@ public class Main {
         System.out.println("Actions: (AddElement(0), RemoveElement(1), ChangeElementDependencies(2), ElementLookup(3)");
         switch (input.nextInt()) {
             case 0:
-
+                TreeBranch.addElement(elementInput()); break;
+            case 1:
+                TreeBranch.removeElement(elementInput()); break;
+            case 2:
+                TreeBranch.getDependencies(elementInput()); break;
+            case 3:
+                elementInput(); break;
 
         }
+    }
+
+    private static BranchElement elementInput() {
+        System.out.println("Which element?: (FindByElementID(0), FindByElementName(1))");
+
+        switch (input.nextInt()) {
+            case 0:
+                System.out.println("Input Element ID: "); break;
+            case 1:
+                System.out.println("Input Element Name: "); break;
+        }
+
+        input.nextLine();
+        String answer = input.nextLine();
+        if (answer.length() != 5) {
+            System.out.println("INVALID INPUT");
+            return elementInput();
+        }
+
+        return TreeBranch.elementLookup(answer);
+
     }
 }
