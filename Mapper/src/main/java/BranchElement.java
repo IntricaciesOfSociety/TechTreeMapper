@@ -3,28 +3,35 @@ import java.util.Arrays;
 
 public class BranchElement {
 
-    private String id;
+    private int id;
 
     private String name;
 
     private ArrayList<String> dependencies = new ArrayList<>();
 
-    BranchElement(String id, String name, String ... dependentIds) {
+    BranchElement(int id, String name, String ... dependencies) {
         this.id = id;
         this.name = name;
-
-        dependencies.addAll(Arrays.asList(dependentIds));
+        this.dependencies.addAll(Arrays.asList(dependencies));
     }
 
-    public String getId() {
+    int getId() {
         return id;
     }
 
-    public String getName() {
-        return "";
+    String getName() {
+        return name;
     }
 
     public ArrayList<String> getDependencies() {
         return dependencies;
+    }
+
+    void addDependency(String newDependency) {
+        dependencies.add(newDependency);
+    }
+
+    public String toString() {
+        return "" + id + " " + name + " " + dependencies.toString().replaceAll("\\[", "").replaceAll("]","");
     }
 }

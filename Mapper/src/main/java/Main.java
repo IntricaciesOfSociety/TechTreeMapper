@@ -34,42 +34,74 @@ public class Main {
                 openBranch = TreeBranch.openTree(BranchFiles.PHYSICS); break;
             case 4:
                 openBranch = TreeBranch.openTree(BranchFiles.SOCIETAL); break;
+            default:
+                System.out.println("INVALID INPUT");
+                treeSelect();
+                break;
         }
     }
 
     private static void actionSelect() {
         System.out.println("Actions: (AddElement(0), RemoveElement(1), ChangeElementDependencies(2), ElementLookup(3)");
-        switch (input.nextInt()) {
-            case 0:
-                TreeBranch.addElement(elementInput()); break;
-            case 1:
-                TreeBranch.removeElement(elementInput()); break;
-            case 2:
-                TreeBranch.getDependencies(elementInput()); break;
-            case 3:
-                elementInput(); break;
+        int selection = input.nextInt();
+        input.nextLine();
 
+        switch (selection) {
+            case 0:
+                TreeBranch.addElement(elementCreationInput()); break;
+            case 1:
+                TreeBranch.removeElement(elementSelectionInput()); break;
+            case 2:
+                TreeBranch.getDependencies(elementSelectionInput()); break;
+            case 3:
+                elementSelectionInput(); break;
+            default:
+                System.out.println("INVALID INPUT");
+                actionSelect();
+                break;
         }
     }
 
-    private static BranchElement elementInput() {
-        System.out.println("Which element?: (FindByElementID(0), FindByElementName(1))");
+    private static BranchElement elementCreationInput() {
+        System.out.println("Input name:");
+        String name = input.nextLine();
+
+        System.out.println("Input number of dependencies:");
+        int numOfDepend = input.nextInt();
+        input.nextLine();
+
+        if (numOfDepend > 0) {
+            String[] dependencies = new String[numOfDepend];
+
+            for (int i = 1; i <  numOfDepend + 1; i++) {
+                System.out.println("Select dependency " + i);
+                dependencies[i - 1] = elementSelectionInput().getName();
+            }
+
+            return new BranchElement(TreeBranch.calculateId(dependencies), name, dependencies);
+        }
+        else
+            return new BranchElement(TreeBranch.calculateId(), name);
+    }
+
+    private static BranchElement elementSelectionInput() {
+        System.out.println("Which element?: (ElementID(0), ElementName(1))");
 
         switch (input.nextInt()) {
             case 0:
                 System.out.println("Input Element ID: "); break;
             case 1:
                 System.out.println("Input Element Name: "); break;
+            default:
+                System.out.println("INVALID INPUT");
+                return elementSelectionInput();
         }
 
         input.nextLine();
         String answer = input.nextLine();
-        if (answer.length() != 5) {
-            System.out.println("INVALID INPUT");
-            return elementInput();
-        }
 
-        return TreeBranch.elementLookup(answer);
-
+        BranchElement foundBranch = TreeBranch.elementLookup(answer);
+        System.out.println("Found branch: " + foundBranch);
+        return foundBranch;
     }
 }
