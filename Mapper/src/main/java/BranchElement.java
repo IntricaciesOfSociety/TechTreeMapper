@@ -31,7 +31,25 @@ public class BranchElement {
         dependencies.add(newDependency);
     }
 
+    void setId(int newId) {
+        id = newId;
+    }
+
     public String toString() {
-        return "" + id + " " + name + " " + dependencies.toString().replaceAll("\\[", "").replaceAll("]","");
+        if (!dependencies.isEmpty())
+            return "" + id + "," + name + "," + dependencies.toString().replaceAll("\\[", "").replaceAll("]","").replaceAll(" ","") + "\n";
+        else
+            return "" + id + "," + name + "\n";
+    }
+
+    void removeStrayDependencies() {
+        ArrayList<String> activeDependencies = new ArrayList<>();
+
+        for (int i = 0; i < TreeBranch.fullTree.size(); i++) {
+            if (this.dependencies.contains(TreeBranch.fullTree.get(i).getName()))
+                activeDependencies.add(TreeBranch.fullTree.get(i).getName());
+        }
+
+        dependencies = activeDependencies;
     }
 }

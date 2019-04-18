@@ -12,13 +12,10 @@ public class Main {
 
     private static void startInput() {
 
-        boolean running = true;
-
         while (true) {
             treeSelect();
             actionSelect();
         }
-
     }
 
     private static void treeSelect() {
@@ -42,19 +39,21 @@ public class Main {
     }
 
     private static void actionSelect() {
-        System.out.println("Actions: (AddElement(0), RemoveElement(1), ChangeElementDependencies(2), ElementLookup(3)");
+        System.out.println("Actions: (AddElement(0), RemoveElement(1), ChangeElementDependencies(2), ElementLookup(3), RecalculateTree(4)");
         int selection = input.nextInt();
         input.nextLine();
 
         switch (selection) {
             case 0:
-                TreeBranch.addElement(elementCreationInput()); break;
+                openBranch.addElement(elementCreationInput()); break;
             case 1:
-                TreeBranch.removeElement(elementSelectionInput()); break;
+                openBranch.removeElement(elementSelectionInput()); break;
             case 2:
-                TreeBranch.getDependencies(elementSelectionInput()); break;
+                openBranch.changeDependencies(elementSelectionInput()); break;
             case 3:
                 elementSelectionInput(); break;
+            case 4:
+                openBranch.recalculateTree(); actionSelect(); break;
             default:
                 System.out.println("INVALID INPUT");
                 actionSelect();
@@ -100,7 +99,7 @@ public class Main {
         input.nextLine();
         String answer = input.nextLine();
 
-        BranchElement foundBranch = TreeBranch.elementLookup(answer);
+        BranchElement foundBranch = openBranch.elementLookup(answer);
         System.out.println("Found branch: " + foundBranch);
         return foundBranch;
     }

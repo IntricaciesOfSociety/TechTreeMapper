@@ -1,9 +1,11 @@
 import java.io.*;
 import java.util.ArrayList;
 
-class TreeBranch extends File{
+class TreeBranch extends File {
 
-    private static ArrayList<BranchElement> fullTree = new ArrayList<>();
+    static ArrayList<BranchElement> fullTree = new ArrayList<>();
+
+    private static int elementCounter = 0;
 
     private TreeBranch(String pathname) {
         super(pathname);
@@ -11,18 +13,31 @@ class TreeBranch extends File{
     }
 
     static int calculateId() {
-        return 1;
+        return 0;
     }
 
     static int calculateId(String[] dependencies) {
-        return 1;
+        return 0;
     }
 
-    private static void recalculateTree() {
+    void recalculateTree() {
         System.out.println("Rewriting tree ... ... ...");
 
-        for (BranchElement element : fullTree) {
-            System.out.println(element);
+        try (PrintWriter writer = new PrintWriter(this)) {
+            for (BranchElement element : fullTree) {
+                element.setId(elementCounter);
+
+                element.removeStrayDependencies();
+                System.out.print(element);
+
+                writer.write(element.toString());
+                elementCounter++;
+            }
+            elementCounter = 0;
+
+            System.out.println("Writing tree done!");
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot write to file");
         }
     }
 
@@ -69,14 +84,14 @@ class TreeBranch extends File{
         return null;
     }
 
-    static void addElement(BranchElement element) {
+    void addElement(BranchElement element) {
         if (element != null) {
             fullTree.add(element.getId(), element);
         }
         recalculateTree();
     }
 
-    static void removeElement(BranchElement element) {
+    void removeElement(BranchElement element) {
         if (element != null) {
             fullTree.remove(element);
             System.out.println("Successfully removed: " + element);
@@ -84,7 +99,7 @@ class TreeBranch extends File{
         recalculateTree();
     }
 
-    static BranchElement elementLookup(String elementName) {
+    BranchElement elementLookup(String elementName) {
         try {
             int id = Integer.parseInt(elementName);
 
@@ -100,7 +115,11 @@ class TreeBranch extends File{
         }
     }
 
-    static void getDependencies(BranchElement element) {
+    void getDependencies(BranchElement element) {
+
+    }
+
+    void changeDependencies(BranchElement branchElement) {
 
     }
 }
